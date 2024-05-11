@@ -1,8 +1,12 @@
+logging:
+  level:
+    root: DEBUG
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/blogapi
-    username: postgres
-    password: postgres
+    username: blogapi_user
+    password: blogapi_pass
   jpa:
     hibernate:
       ddl-auto: none
@@ -18,6 +22,11 @@ spring:
 app:
   jwtSecret: secret
   jwtExpirationInMs: 3600000
+
+security:
+  jwt:
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    expiration-time: 3600000
 
 cors:
   allowedOrings: '*'
