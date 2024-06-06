@@ -8,24 +8,27 @@ import java.util.List;
 
 @Data
 public class PostResponse {
-	private String title;
-	private String body;
-	private String category;
-	private List<String> tags;
 
+    private String title;
 
+    private String body;
 
-	public List<String> getTags() {
+    private String category;
 
-		return tags == null ? null : new ArrayList<>(tags);
-	}
+    private List<String> tags;
 
-	public void setTags(List<String> tags) {
+    public List<String> getTags() {
 
-		if (tags == null) {
-			this.tags = null;
-		} else {
-			this.tags = Collections.unmodifiableList(tags);
-		}
-	}
+        return tags == null ? null : new ArrayList<>(tags);
+    }
+
+    public void setTags(List<String> tags) {
+
+        if (tags == null) {
+            this.tags = null;
+        } else {
+            this.tags = Collections.unmodifiableList(tags);
+        }
+    }
+
 }

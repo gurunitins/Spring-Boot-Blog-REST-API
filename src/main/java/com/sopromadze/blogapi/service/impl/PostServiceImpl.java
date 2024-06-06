@@ -7,7 +7,7 @@ import com.sopromadze.blogapi.model.Category;
 import com.sopromadze.blogapi.model.Post;
 import com.sopromadze.blogapi.model.Tag;
 import com.sopromadze.blogapi.model.role.RoleName;
-import com.sopromadze.blogapi.model.user.User;
+import com.sopromadze.blogapi.model.user.UserEntity;
 import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.payload.PostRequest;
@@ -32,174 +32,171 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.sopromadze.blogapi.utils.AppConstants.CATEGORY;
-import static com.sopromadze.blogapi.utils.AppConstants.CREATED_AT;
-import static com.sopromadze.blogapi.utils.AppConstants.ID;
-import static com.sopromadze.blogapi.utils.AppConstants.POST;
-import static com.sopromadze.blogapi.utils.AppConstants.TAG;
-import static com.sopromadze.blogapi.utils.AppConstants.USER;
+import static com.sopromadze.blogapi.utils.AppConstants.*;
 
 @Service
 public class PostServiceImpl implements PostService {
-	@Autowired
-	private PostRepository postRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private PostRepository postRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private TagRepository tagRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-	@Override
-	public PagedResponse<Post> getAllPosts(int page, int size) {
-		validatePageNumberAndSize(page, size);
+    @Autowired
+    private TagRepository tagRepository;
 
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+    @Override
+    public PagedResponse<Post> getAllPosts(int page, int size) {
+        validatePageNumberAndSize(page, size);
 
-		Page<Post> posts = postRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
-		List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
+        Page<Post> posts = postRepository.findAll(pageable);
 
-		return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
-				posts.getTotalPages(), posts.isLast());
-	}
+        List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
 
-	@Override
-	public PagedResponse<Post> getPostsByCreatedBy(String username, int page, int size) {
-		validatePageNumberAndSize(page, size);
-		User user = userRepository.getUserByName(username);
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-		Page<Post> posts = postRepository.findByCreatedBy(user.getId(), pageable);
+        return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
+                posts.getTotalPages(), posts.isLast());
+    }
 
-		List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
+    @Override
+    public PagedResponse<Post> getPostsByCreatedBy(String username, int page, int size) {
+        validatePageNumberAndSize(page, size);
+        UserEntity userEntity = userRepository.getUserByName(username);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+        Page<Post> posts = postRepository.findByCreatedBy(userEntity.getId(), pageable);
 
-		return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
-				posts.getTotalPages(), posts.isLast());
-	}
+        List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
 
-	@Override
-	public PagedResponse<Post> getPostsByCategory(Long id, int page, int size) {
-		AppUtils.validatePageNumberAndSize(page, size);
-		Category category = categoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, id));
+        return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
+                posts.getTotalPages(), posts.isLast());
+    }
 
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-		Page<Post> posts = postRepository.findByCategory(category.getId(), pageable);
+    @Override
+    public PagedResponse<Post> getPostsByCategory(Long id, int page, int size) {
+        AppUtils.validatePageNumberAndSize(page, size);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, id));
 
-		List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+        Page<Post> posts = postRepository.findByCategory(category.getCategoryId(), pageable);
 
-		return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
-				posts.getTotalPages(), posts.isLast());
-	}
+        List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
 
-	@Override
-	public PagedResponse<Post> getPostsByTag(Long id, int page, int size) {
-		AppUtils.validatePageNumberAndSize(page, size);
+        return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
+                posts.getTotalPages(), posts.isLast());
+    }
 
-		Tag tag = tagRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(TAG, ID, id));
+    @Override
+    public PagedResponse<Post> getPostsByTag(Long id, int page, int size) {
+        AppUtils.validatePageNumberAndSize(page, size);
 
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+        Tag tag = tagRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(TAG, ID, id));
 
-		Page<Post> posts = postRepository.findByTags(Collections.singletonList(tag), pageable);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
-		List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
+        Page<Post> posts = postRepository.findByTags(Collections.singletonList(tag), pageable);
 
-		return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
-				posts.getTotalPages(), posts.isLast());
-	}
+        List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
 
-	@Override
-	public Post updatePost(Long id, PostRequest newPostRequest, UserPrincipal currentUser) {
-		Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
-		Category category = categoryRepository.findById(newPostRequest.getCategoryId())
-				.orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, newPostRequest.getCategoryId()));
-		if (post.getUser().getId().equals(currentUser.getId())
-				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
-			post.setTitle(newPostRequest.getTitle());
-			post.setBody(newPostRequest.getBody());
-			post.setCategory(category);
-			return postRepository.save(post);
-		}
-		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to edit this post");
+        return new PagedResponse<>(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(),
+                posts.getTotalPages(), posts.isLast());
+    }
 
-		throw new UnauthorizedException(apiResponse);
-	}
+    @Override
+    public Post updatePost(Long id, PostRequest newPostRequest, UserPrincipal currentUser) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
+        Category category = categoryRepository.findById(newPostRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, newPostRequest.getCategoryId()));
+        if (post.getUser().getId().equals(currentUser.getId())
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
+            post.setTitle(newPostRequest.getTitle());
+            post.setBody(newPostRequest.getBody());
+            post.setCategory(category);
+            return postRepository.save(post);
+        }
+        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to edit this post");
 
-	@Override
-	public ApiResponse deletePost(Long id, UserPrincipal currentUser) {
-		Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
-		if (post.getUser().getId().equals(currentUser.getId())
-				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
-			postRepository.deleteById(id);
-			return new ApiResponse(Boolean.TRUE, "You successfully deleted post");
-		}
+        throw new UnauthorizedException(apiResponse);
+    }
 
-		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this post");
+    @Override
+    public ApiResponse deletePost(Long id, UserPrincipal currentUser) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
+        if (post.getUser().getId().equals(currentUser.getId())
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
+            postRepository.deleteById(id);
+            return new ApiResponse(Boolean.TRUE, "You successfully deleted post");
+        }
 
-		throw new UnauthorizedException(apiResponse);
-	}
+        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this post");
 
-	@Override
-	public PostResponse addPost(PostRequest postRequest, UserPrincipal currentUser) {
-		User user = userRepository.findById(currentUser.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(USER, ID, 1L));
-		Category category = categoryRepository.findById(postRequest.getCategoryId())
-				.orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, postRequest.getCategoryId()));
+        throw new UnauthorizedException(apiResponse);
+    }
 
-		List<Tag> tags = new ArrayList<>(postRequest.getTags().size());
+    @Override
+    public PostResponse addPost(PostRequest postRequest, UserPrincipal currentUser) {
+        UserEntity userEntity = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, 1L));
+        Category category = categoryRepository.findById(postRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, postRequest.getCategoryId()));
 
-		for (String name : postRequest.getTags()) {
-			Tag tag = tagRepository.findByName(name);
-			tag = tag == null ? tagRepository.save(new Tag(name)) : tag;
+        List<Tag> tags = new ArrayList<>(postRequest.getTags().size());
 
-			tags.add(tag);
-		}
+        for (String name : postRequest.getTags()) {
+            Tag tag = tagRepository.findByName(name);
+            tag = tag == null ? tagRepository.save(new Tag(name)) : tag;
 
-		Post post = new Post();
-		post.setBody(postRequest.getBody());
-		post.setTitle(postRequest.getTitle());
-		post.setCategory(category);
-		post.setUser(user);
-		post.setTags(tags);
+            tags.add(tag);
+        }
 
-		Post newPost = postRepository.save(post);
+        Post post = new Post();
+        post.setBody(postRequest.getBody());
+        post.setTitle(postRequest.getTitle());
+        post.setCategory(category);
+        post.setUser(userEntity);
+        post.setTags(tags);
 
-		PostResponse postResponse = new PostResponse();
+        Post newPost = postRepository.save(post);
 
-		postResponse.setTitle(newPost.getTitle());
-		postResponse.setBody(newPost.getBody());
-		postResponse.setCategory(newPost.getCategory().getName());
+        PostResponse postResponse = new PostResponse();
 
-		List<String> tagNames = new ArrayList<>(newPost.getTags().size());
+        postResponse.setTitle(newPost.getTitle());
+        postResponse.setBody(newPost.getBody());
+        postResponse.setCategory(newPost.getCategory().getName());
 
-		for (Tag tag : newPost.getTags()) {
-			tagNames.add(tag.getName());
-		}
+        List<String> tagNames = new ArrayList<>(newPost.getTags().size());
 
-		postResponse.setTags(tagNames);
+        for (Tag tag : newPost.getTags()) {
+            tagNames.add(tag.getName());
+        }
 
-		return postResponse;
-	}
+        postResponse.setTags(tagNames);
 
-	@Override
-	public Post getPost(Long id) {
-		return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
-	}
+        return postResponse;
+    }
 
-	private void validatePageNumberAndSize(int page, int size) {
-		if (page < 0) {
-			throw new BadRequestException("Page number cannot be less than zero.");
-		}
+    @Override
+    public Post getPost(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
+    }
 
-		if (size < 0) {
-			throw new BadRequestException("Size number cannot be less than zero.");
-		}
+    private void validatePageNumberAndSize(int page, int size) {
+        if (page < 0) {
+            throw new BadRequestException("Page number cannot be less than zero.");
+        }
 
-		if (size > AppConstants.MAX_PAGE_SIZE) {
-			throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
-		}
-	}
+        if (size < 0) {
+            throw new BadRequestException("Size number cannot be less than zero.");
+        }
+
+        if (size > AppConstants.MAX_PAGE_SIZE) {
+            throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
+        }
+    }
+
 }

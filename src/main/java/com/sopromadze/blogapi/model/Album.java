@@ -1,35 +1,25 @@
 package com.sopromadze.blogapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sopromadze.blogapi.model.audit.UserDateAudit;
-import com.sopromadze.blogapi.model.user.User;
+import com.sopromadze.blogapi.model.metadata.MetadataEntity;
+import com.sopromadze.blogapi.model.user.UserEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
-@Table(name = "albums", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
-public class Album extends UserDateAudit {
-    private static final long serialVersionUID = 1L;
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+@Entity
+@Table(name = "albums", uniqueConstraints = { @UniqueConstraint(columnNames = { "title" }) })
+public class Album extends MetadataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,25 +31,9 @@ public class Album extends UserDateAudit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photo;
 
-    @JsonIgnore
-    public User getUser() {
-        return user;
-    }
-
-    public List<Photo> getPhoto() {
-        return this.photo == null ? null : new ArrayList<>(this.photo);
-    }
-
-    public void setPhoto(List<Photo> photo) {
-        if (photo == null) {
-            this.photo = null;
-        } else {
-            this.photo = Collections.unmodifiableList(photo);
-        }
-    }
 }

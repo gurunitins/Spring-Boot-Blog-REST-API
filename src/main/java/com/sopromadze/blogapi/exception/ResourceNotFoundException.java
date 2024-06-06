@@ -6,40 +6,44 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
 
-	private transient ApiResponse apiResponse;
+    private static final long serialVersionUID = 1L;
 
-	private String resourceName;
-	private String fieldName;
-	private Object fieldValue;
+    private transient ApiResponse apiResponse;
 
-	public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-		super();
-		this.resourceName = resourceName;
-		this.fieldName = fieldName;
-		this.fieldValue = fieldValue;
-	}
+    private String resourceName;
 
-	public String getResourceName() {
-		return resourceName;
-	}
+    private String fieldName;
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    private Object fieldValue;
 
-	public Object getFieldValue() {
-		return fieldValue;
-	}
+    public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
+        super();
+        this.resourceName = resourceName;
+        this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
+    }
 
-	public ApiResponse getApiResponse() {
-		return apiResponse;
-	}
+    public String getResourceName() {
+        return resourceName;
+    }
 
-	private void setApiResponse() {
-		String message = String.format("%s not found with %s: '%s'", resourceName, fieldName, fieldValue);
+    public String getFieldName() {
+        return fieldName;
+    }
 
-		apiResponse = new ApiResponse(Boolean.FALSE, message);
-	}
+    public Object getFieldValue() {
+        return fieldValue;
+    }
+
+    public ApiResponse getApiResponse() {
+        return apiResponse;
+    }
+
+    private void setApiResponse() {
+        String message = String.format("%s not found with %s: '%s'", resourceName, fieldName, fieldValue);
+
+        apiResponse = new ApiResponse(Boolean.FALSE, message);
+    }
+
 }

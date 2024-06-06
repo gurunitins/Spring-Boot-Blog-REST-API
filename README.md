@@ -13,9 +13,11 @@ git clone https://github.com/coma123/Spring-Boot-Blog-REST-API.git
 ```
 
 **2. Create Mysql database**
+
 ```bash
 create database blogapi
 ```
+
 - run `src/main/resources/blogapi.sql`
 
 **3. Change mysql username and password as per your installation**
@@ -28,6 +30,7 @@ create database blogapi
 ```bash
 mvn spring-boot:run
 ```
+
 The app will start running at <http://localhost:8080>
 
 ## Explore Rest APIs
@@ -36,86 +39,87 @@ The app defines following CRUD APIs.
 
 ### Auth
 
-| Method | Url | Decription | Sample Valid Request Body | 
-| ------ | --- | ---------- | --------------------------- |
-| POST   | /api/auth/signup | Sign up | [JSON](#signup) |
-| POST   | /api/auth/signin | Log in | [JSON](#signin) |
+| Method | Url              | Decription | Sample Valid Request Body | 
+|--------|------------------|------------|---------------------------|
+| POST   | /api/auth/signup | Sign up    | [JSON](#signup)           |
+| POST   | /api/auth/signin | Log in     | [JSON](#signin)           |
 
 ### Users
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/users/me | Get logged in user profile | |
-| GET    | /api/users/{username}/profile | Get user profile by username | |
-| GET    | /api/users/{username}/posts | Get posts created by user | |
-| GET    | /api/users/{username}/albums | Get albums created by user | |
-| GET    | /api/users/checkUsernameAvailability | Check if username is available to register | |
-| GET    | /api/users/checkEmailAvailability | Check if email is available to register | |
-| POST   | /api/users | Add user (Only for admins) | [JSON](#usercreate) |
-| PUT    | /api/users/{username} | Update user (If profile belongs to logged in user or logged in user is admin) | [JSON](#userupdate) |
-| DELETE | /api/users/{username} | Delete user (For logged in user or admin) | |
-| PUT    | /api/users/{username}/giveAdmin | Give admin role to user (only for admins) | |
-| PUT    | /api/users/{username}/TakeAdmin | Take admin role from user (only for admins) | |
-| PUT    | /api/users/setOrUpdateInfo | Update user profile (If profile belongs to logged in user or logged in user is admin) | [JSON](#userinfoupdate) |
+| Method | Url                                  | Description                                                                                             | Sample Valid Request Body |
+|--------|--------------------------------------|---------------------------------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/users/me                        | Get logged in userEntity profile                                                                        |                           |
+| GET    | /api/users/{username}/profile        | Get userEntity profile by username                                                                      |                           |
+| GET    | /api/users/{username}/posts          | Get posts created by userEntity                                                                         |                           |
+| GET    | /api/users/{username}/albums         | Get albums created by userEntity                                                                        |                           |
+| GET    | /api/users/checkUsernameAvailability | Check if username is available to register                                                              |                           |
+| GET    | /api/users/checkEmailAvailability    | Check if email is available to register                                                                 |                           |
+| POST   | /api/users                           | Add userEntity (Only for admins)                                                                        | [JSON](#usercreate)       |
+| PUT    | /api/users/{username}                | Update userEntity (If profile belongs to logged in userEntity or logged in userEntity is admin)         | [JSON](#userupdate)       |
+| DELETE | /api/users/{username}                | Delete userEntity (For logged in userEntity or admin)                                                   |                           |
+| PUT    | /api/users/{username}/giveAdmin      | Give admin role to userEntity (only for admins)                                                         |                           |
+| PUT    | /api/users/{username}/TakeAdmin      | Take admin role from userEntity (only for admins)                                                       |                           |
+| PUT    | /api/users/setOrUpdateInfo           | Update userEntity profile (If profile belongs to logged in userEntity or logged in userEntity is admin) | [JSON](#userinfoupdate)   |
 
 ### Posts
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/posts | Get all posts | |
-| GET    | /api/posts/{id} | Get post by id | |
-| POST   | /api/posts | Create new post (By logged in user) | [JSON](#postcreate) |
-| PUT    | /api/posts/{id} | Update post (If post belongs to logged in user or logged in user is admin) | [JSON](#postupdate) |
-| DELETE | /api/posts/{id} | Delete post (If post belongs to logged in user or logged in user is admin) | |
+| Method | Url             | Description                                                                            | Sample Valid Request Body |
+|--------|-----------------|----------------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/posts      | Get all posts                                                                          |                           |
+| GET    | /api/posts/{id} | Get post by id                                                                         |                           |
+| POST   | /api/posts      | Create new post (By logged in userEntity)                                              | [JSON](#postcreate)       |
+| PUT    | /api/posts/{id} | Update post (If post belongs to logged in userEntity or logged in userEntity is admin) | [JSON](#postupdate)       |
+| DELETE | /api/posts/{id} | Delete post (If post belongs to logged in userEntity or logged in userEntity is admin) |                           |
 
 ### Comments
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/posts/{postId}/comments | Get all comments which belongs to post with id = postId | |
-| GET    | /api/posts/{postId}/comments/{id} | Get comment by id if it belongs to post with id = postId | |
-| POST   | /api/posts/{postId}/comments | Create new comment for post with id = postId (By logged in user) | [JSON](#commentcreate) |
-| PUT    | /api/posts/{postId}/comments/{id} | Update comment by id if it belongs to post with id = postId (If comment belongs to logged in user or logged in user is admin) | [JSON](#commentupdate) |
-| DELETE | /api/posts/{postId}/comments/{id} | Delete comment by id if it belongs to post with id = postId (If comment belongs to logged in user or logged in user is admin) | |
+| Method | Url                               | Description                                                                                                                               | Sample Valid Request Body |
+|--------|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/posts/{postId}/comments      | Get all comments which belongs to post with id = postId                                                                                   |                           |
+| GET    | /api/posts/{postId}/comments/{id} | Get comment by id if it belongs to post with id = postId                                                                                  |                           |
+| POST   | /api/posts/{postId}/comments      | Create new comment for post with id = postId (By logged in userEntity)                                                                    | [JSON](#commentcreate)    |
+| PUT    | /api/posts/{postId}/comments/{id} | Update comment by id if it belongs to post with id = postId (If comment belongs to logged in userEntity or logged in userEntity is admin) | [JSON](#commentupdate)    |
+| DELETE | /api/posts/{postId}/comments/{id} | Delete comment by id if it belongs to post with id = postId (If comment belongs to logged in userEntity or logged in userEntity is admin) |                           |
 
 ### Albums
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/albums | Get all albums | |
-| GET    | /api/albums/{id} | Get album by id | |
-| POST   | /api/albums | Create new album (By logged in user) | [JSON](#albumcreate) |
-| PUT    | /api/albums/{id} | Update album (If album belongs to logged in user or logged in user is admin) | [JSON](#albumupdate) |
-| DELETE | /api/albums/{id} | Delete album (If album belongs to logged in user or logged in user is admin) | |
-| GET    | /api/albums/{id}/photos | Get all photos which belongs to album with id = id | |
+| Method | Url                     | Description                                                                              | Sample Valid Request Body |
+|--------|-------------------------|------------------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/albums             | Get all albums                                                                           |                           |
+| GET    | /api/albums/{id}        | Get album by id                                                                          |                           |
+| POST   | /api/albums             | Create new album (By logged in userEntity)                                               | [JSON](#albumcreate)      |
+| PUT    | /api/albums/{id}        | Update album (If album belongs to logged in userEntity or logged in userEntity is admin) | [JSON](#albumupdate)      |
+| DELETE | /api/albums/{id}        | Delete album (If album belongs to logged in userEntity or logged in userEntity is admin) |                           |
+| GET    | /api/albums/{id}/photos | Get all photos which belongs to album with id = id                                       |                           |
 
 ### Photos
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/photos | Get all photos | |
-| GET    | /api/photos/{id} | Get photo by id | |
-| POST   | /api/photos | Create new photo (By logged in user) | [JSON](#photocreate) |
-| PUT    | /api/photos/{id} | Update photo (If photo belongs to logged in user or logged in user is admin) | [JSON](#photoupdate) |
-| DELETE | /api/photos/{id} | Delete photo (If photo belongs to logged in user or logged in user is admin) | |
+| Method | Url              | Description                                                                              | Sample Valid Request Body |
+|--------|------------------|------------------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/photos      | Get all photos                                                                           |                           |
+| GET    | /api/photos/{id} | Get photo by id                                                                          |                           |
+| POST   | /api/photos      | Create new photo (By logged in userEntity)                                               | [JSON](#photocreate)      |
+| PUT    | /api/photos/{id} | Update photo (If photo belongs to logged in userEntity or logged in userEntity is admin) | [JSON](#photoupdate)      |
+| DELETE | /api/photos/{id} | Delete photo (If photo belongs to logged in userEntity or logged in userEntity is admin) |                           |
 
 ### Todos
 
-| Method | Url | Description | Sample Valid Request Body |
-| ------ | --- | ----------- | ------------------------- |
-| GET    | /api/todos | Get all todos which belongs to logged in user | |
-| GET    | /api/todos/{id} | Get todo by id (If todo belongs to logged in user) | |
-| POST   | /api/todos | Create new todo (By logged in user) | [JSON](#todocreate) |
-| PUT    | /api/todos/{id} | Update todo (If todo belongs to logged in user) | [JSON](#todoupdate) |
-| DELETE | /api/todos/{id} | Delete todo (If todo belongs to logged in user) | |
-| PUT    | /api/todos/{id}/complete | Mark todo as complete (If todo belongs to logged in user) | |
-| PUT    | /api/todos/{id}/unComplete | Mark todo as uncomplete (If todo belongs to logged in user) | |
+| Method | Url                               | Description                                                                   | Sample Valid Request Body |
+|--------|-----------------------------------|-------------------------------------------------------------------------------|---------------------------|
+| GET    | /api/todoEntities                 | Get all todoEntities which belongs to logged in userEntity                    |                           |
+| GET    | /api/todoEntities/{id}            | Get todoEntity by id (If todoEntity belongs to logged in userEntity)          |                           |
+| POST   | /api/todoEntities                 | Create new todoEntity (By logged in userEntity)                               | [JSON](#todocreate)       |
+| PUT    | /api/todoEntities/{id}            | Update todoEntity (If todoEntity belongs to logged in userEntity)             | [JSON](#todoupdate)       |
+| DELETE | /api/todoEntities/{id}            | Delete todoEntity (If todoEntity belongs to logged in userEntity)             |                           |
+| PUT    | /api/todoEntities/{id}/complete   | Mark todoEntity as complete (If todoEntity belongs to logged in userEntity)   |                           |
+| PUT    | /api/todoEntities/{id}/unComplete | Mark todoEntity as uncomplete (If todoEntity belongs to logged in userEntity) |                           |
 
 Test them using postman or any other rest client.
 
 ## Sample Valid JSON Request Bodys
 
 ##### <a id="signup">Sign Up -> /api/auth/signup</a>
+
 ```json
 {
 	"firstName": "Leanne",
@@ -127,6 +131,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="signin">Log In -> /api/auth/signin</a>
+
 ```json
 {
 	"usernameOrEmail": "leanne",
@@ -135,6 +140,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="usercreate">Create User -> /api/users</a>
+
 ```json
 {
 	"firstName": "Ervin",
@@ -163,6 +169,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="userupdate">Update User -> /api/users/{username}</a>
+
 ```json
 {
 	"firstName": "Ervin",
@@ -191,6 +198,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="userinfoupdate">Update User Profile -> /api/users/setOrUpdateInfo</a>
+
 ```json
 {
 	"street": "Douglas Extension",
@@ -208,6 +216,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="postcreate">Create Post -> /api/posts</a>
+
 ```json
 {
 	"title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
@@ -216,6 +225,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="postupdate">Update Post -> /api/posts/{id}</a>
+
 ```json
 {
 	"title": "UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED",
@@ -224,6 +234,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="commentcreate">Create Comment -> /api/posts/{postId}/comments</a>
+
 ```json
 {
 	"body": "laudantium enim quasi est quidem magnam voluptate ipsam eos tempora quo necessitatibus dolor quam autem quasi reiciendis et nam sapiente accusantium"
@@ -231,6 +242,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="commentupdate">Update Comment -> /api/posts/{postId}/comments/{id}</a>
+
 ```json
 {
 	"body": "UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED UPDATED "
@@ -238,6 +250,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="albumcreate">Create Album -> /api/albums</a>
+
 ```json
 {
 	"title": "quidem molestiae enim"
@@ -245,6 +258,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="albumupdate">Update Album -> /api/albums/{id}</a>
+
 ```json
 {
 	"title": "quidem molestiae enim UPDATED"
@@ -252,6 +266,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="photocreate">Create Photo -> /api/photos</a>
+
 ```json
 {
 	"title": "accusamus beatae ad facilis cum similique qui sunt",
@@ -262,6 +277,7 @@ Test them using postman or any other rest client.
 ```
 
 ##### <a id="photoupdate">Update Photo -> /api/photos{id}</a>
+
 ```json
 {
 	"title": "accusamus beatae ad facilis ",
@@ -271,7 +287,8 @@ Test them using postman or any other rest client.
 }
 ```
 
-##### <a id="todocreate">Create Todo -> /api/todos</a>
+##### <a id="todocreate">Create Todo -> /api/todoEntities</a>
+
 ```json
 {
 	"title": "delectus aut autem",
@@ -279,11 +296,13 @@ Test them using postman or any other rest client.
 }
 ```
 
-##### <a id="todoupdate">Update Todo -> /api/todos{id}</a>
+##### <a id="todoupdate">Update Todo -> /api/todoEntities{id}</a>
+
 ```json
 {
 	"title": "delectus aut autem Updated",
 	"completed": true
 }
 ```
+
 ![segment](https://api.segment.io/v1/pixel/track?data=ewogICJ3cml0ZUtleSI6ICJwcDJuOTU4VU1NT21NR090MWJXS0JQd0tFNkcydW51OCIsCiAgInVzZXJJZCI6ICIxMjNibG9nYXBpMTIzIiwKICAiZXZlbnQiOiAiQmxvZ0FwaSB2aXNpdGVkIiwKICAicHJvcGVydGllcyI6IHsKICAgICJzdWJqZWN0IjogIkJsb2dBcGkgdmlzaXRlZCIsCiAgICAiZW1haWwiOiAiY29tcy5zcHVyc0BnbWFpbC5jb20iCiAgfQp9)

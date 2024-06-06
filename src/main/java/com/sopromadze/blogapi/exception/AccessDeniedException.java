@@ -6,40 +6,41 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 public class AccessDeniedException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
 
-	private ApiResponse apiResponse;
+    private static final long serialVersionUID = 1L;
 
-	private String message;
+    private ApiResponse apiResponse;
 
-	public AccessDeniedException(ApiResponse apiResponse) {
-		super();
-		this.apiResponse = apiResponse;
-	}
+    private String message;
 
-	public AccessDeniedException(String message) {
-		super(message);
-		this.message = message;
-	}
+    public AccessDeniedException(ApiResponse apiResponse) {
+        super();
+        this.apiResponse = apiResponse;
+    }
 
-	public AccessDeniedException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public AccessDeniedException(String message) {
+        super(message);
+        this.message = message;
+    }
 
-	public ApiResponse getApiResponse() {
-		return apiResponse;
-	}
+    public AccessDeniedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public void setApiResponse(ApiResponse apiResponse) {
-		this.apiResponse = apiResponse;
-	}
+    public ApiResponse getApiResponse() {
+        return apiResponse;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setApiResponse(ApiResponse apiResponse) {
+        this.apiResponse = apiResponse;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

@@ -12,15 +12,27 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
-	private Long id;
-	private String username;
-	private String firstName;
-	private String lastName;
-	private Instant joinedAt;
-	private String email;
-	private Address address;
-	private String phone;
-	private String website;
-	private Company company;
-	private Long postCount;
+
+    private Long id;
+
+    private String username;
+
+    private String firstName;
+
+    private String lastName;
+
+    private Instant joinedAt;
+
+    private String email;
+
+    private Address address;
+
+    private String phone;
+
+    private String website;
+
+    private Company company;
+
+    private Long postCount;
+
 }

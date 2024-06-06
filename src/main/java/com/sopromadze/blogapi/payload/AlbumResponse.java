@@ -3,7 +3,7 @@ package com.sopromadze.blogapi.payload;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sopromadze.blogapi.model.Photo;
-import com.sopromadze.blogapi.model.user.User;
+import com.sopromadze.blogapi.model.user.UserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,25 +15,27 @@ import java.util.List;
 @Data
 @JsonInclude(Include.NON_NULL)
 public class AlbumResponse extends UserDateAuditPayload {
-	private Long id;
 
-	private String title;
+    private Long id;
 
-	private User user;
+    private String title;
 
-	private List<Photo> photo;
+    private UserEntity userEntity;
 
-	public List<Photo> getPhoto() {
+    private List<Photo> photo;
 
-		return photo == null ? null : new ArrayList<>(photo);
-	}
+    public List<Photo> getPhoto() {
 
-	public void setPhoto(List<Photo> photo) {
+        return photo == null ? null : new ArrayList<>(photo);
+    }
 
-		if (photo == null) {
-			this.photo = null;
-		} else {
-			this.photo = Collections.unmodifiableList(photo);
-		}
-	}
+    public void setPhoto(List<Photo> photo) {
+
+        if (photo == null) {
+            this.photo = null;
+        } else {
+            this.photo = Collections.unmodifiableList(photo);
+        }
+    }
+
 }

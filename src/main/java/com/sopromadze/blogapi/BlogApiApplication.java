@@ -11,8 +11,7 @@ import org.springframework.data.convert.Jsr310Converters;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EntityScan(basePackageClasses = {BlogApiApplication.class, Jsr310Converters.class})
-
+@EntityScan(basePackageClasses = { BlogApiApplication.class, Jsr310Converters.class })
 public class BlogApiApplication {
 
     public static void main(String[] args) {

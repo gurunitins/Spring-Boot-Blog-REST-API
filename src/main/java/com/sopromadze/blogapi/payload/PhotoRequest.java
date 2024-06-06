@@ -1,10 +1,9 @@
 package com.sopromadze.blogapi.payload;
 
-import lombok.Data;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Data
 public class PhotoRequest {
@@ -23,4 +22,5 @@ public class PhotoRequest {
 
     @NotNull
     private Long albumId;
+
 }

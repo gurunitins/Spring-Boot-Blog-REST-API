@@ -2,38 +2,25 @@ package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Album;
 import com.sopromadze.blogapi.model.Post;
-import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.InfoRequest;
-import com.sopromadze.blogapi.payload.PagedResponse;
-import com.sopromadze.blogapi.payload.UserIdentityAvailability;
-import com.sopromadze.blogapi.payload.UserProfile;
-import com.sopromadze.blogapi.payload.UserSummary;
+import com.sopromadze.blogapi.model.user.UserEntity;
+import com.sopromadze.blogapi.payload.*;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.AlbumService;
 import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.blogapi.service.UserService;
 import com.sopromadze.blogapi.utils.AppConstants;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -92,17 +79,17 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-        User newUser = userService.addUser(user);
+    public ResponseEntity<UserEntity> addUser(@Valid @RequestBody UserEntity userEntity) {
+        UserEntity newUserEntity = userService.addUser(userEntity);
 
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(newUserEntity, HttpStatus.CREATED);
     }
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User newUser,
-                                           @PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser) {
-        User updatedUSer = userService.updateUser(newUser, username, currentUser);
+    public ResponseEntity<UserEntity> updateUser(@Valid @RequestBody UserEntity newUserEntity,
+                                                 @PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser) {
+        UserEntity updatedUSer = userService.updateUser(newUserEntity, username, currentUser);
 
         return new ResponseEntity<>(updatedUSer, HttpStatus.CREATED);
     }

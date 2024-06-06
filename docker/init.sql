@@ -77,12 +77,14 @@ CREATE TABLE IF NOT EXISTS users
     company_id bigint check (company_id > 0)  DEFAULT NULL REFERENCES company (id),
     created_at timestamp(0)          NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp(0)          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by bigint,
+    updated_by bigint,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS todos
 (
-    id         bigint check (id > 0)         NOT NULL GENERATED ALWAYS AS IDENTITY,
+    todo_id    bigint check (todo_id > 0)    NOT NULL GENERATED ALWAYS AS IDENTITY,
     title      varchar(255)                  NOT NULL,
     completed  boolean                                default false,
     user_id    bigint check (user_id > 0)             DEFAULT NULL REFERENCES users (id),
@@ -90,7 +92,7 @@ CREATE TABLE IF NOT EXISTS todos
     updated_at timestamp(0)                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by bigint check (created_by > 0) NOT NULL,
     updated_by bigint check (updated_by > 0) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (todo_id)
 );
 
 CREATE TABLE IF NOT EXISTS albums
@@ -119,16 +121,29 @@ CREATE TABLE photos
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS categories
+(
+    category_id    bigint check (category_id > 0)    NOT NULL GENERATED ALWAYS AS IDENTITY,
+    name      varchar(255)                           NOT NULL,
+    user_id    bigint check (user_id > 0)            DEFAULT NULL REFERENCES users (id),
+    created_at timestamp(0)                          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp(0)                          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by bigint check (created_by > 0)         NOT NULL,
+    updated_by bigint check (updated_by > 0)         NOT NULL,
+    PRIMARY KEY (category_id)
+);
+
 CREATE TABLE posts
 (
-    id         bigint check (id > 0)         NOT NULL GENERATED ALWAYS AS IDENTITY,
-    title      varchar(255)                  NOT NULL,
-    body       text                          NOT NULL,
-    user_id    bigint check (user_id > 0)             DEFAULT NULL REFERENCES users (id),
-    created_at timestamp(0)                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp(0)                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by bigint check (created_by > 0) NOT NULL,
-    updated_by bigint check (updated_by > 0) NOT NULL,
+    id          bigint check (id > 0)             NOT NULL GENERATED ALWAYS AS IDENTITY,
+    title       varchar(255)                      NOT NULL,
+    body        text                              NOT NULL,
+    user_id     bigint check (user_id > 0)        DEFAULT NULL REFERENCES users (id),
+    category_id bigint check (category_id > 0)    DEFAULT NULL REFERENCES categories (category_id),
+    created_at  timestamp(0)                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  timestamp(0)                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by  bigint check (created_by > 0)     NOT NULL,
+    updated_by  bigint check (updated_by > 0)     NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -169,7 +184,3 @@ CREATE TABLE user_role
     role_id bigint check ( role_id > 0 ) NOT NULL REFERENCES roles (id),
     PRIMARY KEY (id)
 );
-
-INSERT INTO roles(name)
-VALUES ('ROLE_ADMIN'),
-       ('ROLE_USER');

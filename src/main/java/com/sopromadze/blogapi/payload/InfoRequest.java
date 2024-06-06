@@ -1,8 +1,7 @@
 package com.sopromadze.blogapi.payload;
 
-import lombok.Data;
-
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class InfoRequest {
@@ -32,4 +31,5 @@ public class InfoRequest {
     private String lat;
 
     private String lng;
+
 }

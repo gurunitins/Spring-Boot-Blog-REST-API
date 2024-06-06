@@ -21,98 +21,99 @@ import java.util.Objects;
 @ControllerAdvice
 public class RestControllerExceptionHandler {
 
-	public ResponseEntity<ApiResponse> resolveException(BlogapiException exception) {
-		String message = exception.getMessage();
-		HttpStatus status = exception.getStatus();
+    public ResponseEntity<ApiResponse> resolveException(BlogapiException exception) {
+        String message = exception.getMessage();
+        HttpStatus status = exception.getStatus();
 
-		ApiResponse apiResponse = new ApiResponse();
+        ApiResponse apiResponse = new ApiResponse();
 
-		apiResponse.setSuccess(Boolean.FALSE);
-		apiResponse.setMessage(message);
+        apiResponse.setSuccess(Boolean.FALSE);
+        apiResponse.setMessage(message);
 
-		return new ResponseEntity<>(apiResponse, status);
-	}
+        return new ResponseEntity<>(apiResponse, status);
+    }
 
-	@ExceptionHandler(UnauthorizedException.class)
-	@ResponseBody
-	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-	public ResponseEntity<ApiResponse> resolveException(UnauthorizedException exception) {
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ApiResponse> resolveException(UnauthorizedException exception) {
 
-		ApiResponse apiResponse = exception.getApiResponse();
+        ApiResponse apiResponse = exception.getApiResponse();
 
-		return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
-	}
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
+    }
 
-	@ExceptionHandler(BadRequestException.class)
-	@ResponseBody
-	public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {
-		ApiResponse apiResponse = exception.getApiResponse();
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {
+        ApiResponse apiResponse = exception.getApiResponse();
 
-		return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-	}
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
 
-	@ExceptionHandler(ResourceNotFoundException.class)
-	@ResponseBody
-	public ResponseEntity<ApiResponse> resolveException(ResourceNotFoundException exception) {
-		ApiResponse apiResponse = exception.getApiResponse();
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> resolveException(ResourceNotFoundException exception) {
+        ApiResponse apiResponse = exception.getApiResponse();
 
-		return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
-	}
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    }
 
-	@ExceptionHandler(AccessDeniedException.class)
-	@ResponseBody
-	public ResponseEntity<ApiResponse> resolveException(AccessDeniedException exception) {
-		ApiResponse apiResponse = exception.getApiResponse();
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> resolveException(AccessDeniedException exception) {
+        ApiResponse apiResponse = exception.getApiResponse();
 
-		return new ResponseEntity< >(apiResponse, HttpStatus.FORBIDDEN);
-	}
+        return new ResponseEntity<>(apiResponse, HttpStatus.FORBIDDEN);
+    }
 
-	@ExceptionHandler({ MethodArgumentNotValidException.class })
-	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentNotValidException ex) {
-		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-		List<String> messages = new ArrayList<>(fieldErrors.size());
-		for (FieldError error : fieldErrors) {
-			messages.add(error.getField() + " - " + error.getDefaultMessage());
-		}
-		return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
-				HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler({ MethodArgumentNotValidException.class })
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentNotValidException ex) {
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        List<String> messages = new ArrayList<>(fieldErrors.size());
+        for (FieldError error : fieldErrors) {
+            messages.add(error.getField() + " - " + error.getDefaultMessage());
+        }
+        return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
 
-	@ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentTypeMismatchException ex) {
-		String message = "Parameter '" + ex.getParameter().getParameterName() + "' must be '"
-				+ Objects.requireNonNull(ex.getRequiredType()).getSimpleName() + "'";
-		List<String> messages = new ArrayList<>(1);
-		messages.add(message);
-		return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
-				HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentTypeMismatchException ex) {
+        String message = "Parameter '" + ex.getParameter().getParameterName() + "' must be '"
+                + Objects.requireNonNull(ex.getRequiredType()).getSimpleName() + "'";
+        List<String> messages = new ArrayList<>(1);
+        messages.add(message);
+        return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
 
-	@ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
-	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-	@ResponseBody
-	public ResponseEntity<ExceptionResponse> resolveException(HttpRequestMethodNotSupportedException ex) {
-		String message = "Request method '" + ex.getMethod() + "' not supported. List of all supported methods - "
-				+ ex.getSupportedHttpMethods();
-		List<String> messages = new ArrayList<>(1);
-		messages.add(message);
+    @ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseBody
+    public ResponseEntity<ExceptionResponse> resolveException(HttpRequestMethodNotSupportedException ex) {
+        String message = "Request method '" + ex.getMethod() + "' not supported. List of all supported methods - "
+                + ex.getSupportedHttpMethods();
+        List<String> messages = new ArrayList<>(1);
+        messages.add(message);
 
-		return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
-				HttpStatus.METHOD_NOT_ALLOWED.value()), HttpStatus.METHOD_NOT_ALLOWED);
-	}
+        return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
+                HttpStatus.METHOD_NOT_ALLOWED.value()), HttpStatus.METHOD_NOT_ALLOWED);
+    }
 
-	@ExceptionHandler({ HttpMessageNotReadableException.class })
-	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ExceptionResponse> resolveException(HttpMessageNotReadableException ex) {
-		String message = "Please provide Request Body in valid JSON format";
-		List<String> messages = new ArrayList<>(1);
-		messages.add(message);
-		return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
-				HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler({ HttpMessageNotReadableException.class })
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponse> resolveException(HttpMessageNotReadableException ex) {
+        String message = "Please provide Request Body in valid JSON format";
+        List<String> messages = new ArrayList<>(1);
+        messages.add(message);
+        return new ResponseEntity<>(new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
 }

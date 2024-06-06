@@ -1,29 +1,20 @@
 package com.sopromadze.blogapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sopromadze.blogapi.model.audit.UserDateAudit;
+import com.sopromadze.blogapi.model.metadata.MetadataEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "photos", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
-public class Photo extends UserDateAudit {
+@Table(name = "photos", uniqueConstraints = { @UniqueConstraint(columnNames = { "title" }) })
+public class Photo extends MetadataEntity {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -57,4 +48,5 @@ public class Photo extends UserDateAudit {
     public Album getAlbum() {
         return album;
     }
+
 }

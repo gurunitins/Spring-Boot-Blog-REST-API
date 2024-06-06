@@ -1,31 +1,23 @@
 package com.sopromadze.blogapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sopromadze.blogapi.model.audit.UserDateAudit;
-import com.sopromadze.blogapi.model.user.User;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.sopromadze.blogapi.model.metadata.MetadataEntity;
+import com.sopromadze.blogapi.model.user.UserEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "comments")
-public class Comment extends UserDateAudit {
+public class Comment extends MetadataEntity {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -54,7 +46,7 @@ public class Comment extends UserDateAudit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     public Comment(@NotBlank @Size(min = 10, message = "Comment body must be minimum 10 characters") String body) {
         this.body = body;
@@ -66,7 +58,8 @@ public class Comment extends UserDateAudit {
     }
 
     @JsonIgnore
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
+
 }
