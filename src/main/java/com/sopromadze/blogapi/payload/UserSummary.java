@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserSummary {
 	private Long id;
-	private String username;
+	private String userName;
 	private String firstName;
 	private String lastName;
 }

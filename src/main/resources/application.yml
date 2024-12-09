@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://blogapi-db:3306/blogapi?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/db_ncx_master?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: rootroot
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,8 +13,11 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
-    time-zone: UTC
-
+    time-zone: IST
+    devtools:
+        add-properties: true
+server:
+  port: 9080
 app:
   jwtSecret: secret
   jwtExpirationInMs: 3600000

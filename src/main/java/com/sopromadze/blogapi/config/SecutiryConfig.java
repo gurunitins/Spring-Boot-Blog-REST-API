@@ -50,8 +50,10 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+//				.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+//				.antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+//				.antMatchers(HttpMethod.GET, "/api/v2/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/v2/auth/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability", "/api/users/checkEmailAvailability").permitAll()
 				.anyRequest().authenticated();
 

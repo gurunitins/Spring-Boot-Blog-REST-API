@@ -1,22 +1,13 @@
 package com.sopromadze.blogapi.service.impl;
 
-import com.sopromadze.blogapi.exception.AccessDeniedException;
-import com.sopromadze.blogapi.exception.AppException;
-import com.sopromadze.blogapi.exception.BadRequestException;
-import com.sopromadze.blogapi.exception.ResourceNotFoundException;
-import com.sopromadze.blogapi.exception.UnauthorizedException;
+import com.sopromadze.blogapi.exception.*;
 import com.sopromadze.blogapi.model.role.Role;
 import com.sopromadze.blogapi.model.role.RoleName;
 import com.sopromadze.blogapi.model.user.Address;
 import com.sopromadze.blogapi.model.user.Company;
 import com.sopromadze.blogapi.model.user.Geo;
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.InfoRequest;
-import com.sopromadze.blogapi.payload.UserIdentityAvailability;
-import com.sopromadze.blogapi.payload.UserProfile;
-import com.sopromadze.blogapi.payload.UserSummary;
-import com.sopromadze.blogapi.repository.PostRepository;
+import com.sopromadze.blogapi.payload.*;
 import com.sopromadze.blogapi.repository.RoleRepository;
 import com.sopromadze.blogapi.repository.UserRepository;
 import com.sopromadze.blogapi.security.UserPrincipal;
@@ -34,9 +25,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private PostRepository postRepository;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -64,13 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserProfile getUserProfile(String username) {
-		User user = userRepository.getUserByName(username);
-
-		Long postCount = postRepository.countByCreatedBy(user.getId());
-
-		return new UserProfile(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
-				user.getCreatedAt(), user.getEmail(), user.getAddress(), user.getPhone(), user.getWebsite(),
-				user.getCompany(), postCount);
+		return null;
 	}
 
 	@Override
@@ -171,12 +153,12 @@ public class UserServiceImpl implements UserService {
 			user.setPhone(infoRequest.getPhone());
 			User updatedUser = userRepository.save(user);
 
-			Long postCount = postRepository.countByCreatedBy(updatedUser.getId());
+//			Long postCount = postRepository.countByCreatedBy(updatedUser.getId());
 
 			return new UserProfile(updatedUser.getId(), updatedUser.getUsername(),
 					updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getCreatedAt(),
 					updatedUser.getEmail(), updatedUser.getAddress(), updatedUser.getPhone(), updatedUser.getWebsite(),
-					updatedUser.getCompany(), postCount);
+					updatedUser.getCompany(), null);
 		}
 
 		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update users profile", HttpStatus.FORBIDDEN);

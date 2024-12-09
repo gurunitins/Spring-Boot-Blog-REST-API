@@ -43,6 +43,7 @@ public class RestControllerExceptionHandler {
 		return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
 	}
 
+
 	@ExceptionHandler(BadRequestException.class)
 	@ResponseBody
 	public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {

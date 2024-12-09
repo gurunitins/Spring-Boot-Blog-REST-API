@@ -1,5 +1,6 @@
 package com.sopromadze.blogapi.model.audit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,10 +25,12 @@ public abstract class DateAudit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@CreatedDate
+	@JsonIgnore
 	@Column(nullable = false, updatable = false)
 	private Instant createdAt;
 
 	@LastModifiedDate
+	@JsonIgnore
 	@Column(nullable = false)
 	private Instant updatedAt;
 

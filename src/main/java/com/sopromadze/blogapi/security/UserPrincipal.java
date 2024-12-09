@@ -1,7 +1,10 @@
 package com.sopromadze.blogapi.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sopromadze.blogapi.model.user.User;
+import com.sopromadze.blogapi.model.v2.MHotel;
+import com.sopromadze.blogapi.model.v2.MUser;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@ToString
 public class UserPrincipal implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -29,15 +33,19 @@ public class UserPrincipal implements UserDetails {
 	@JsonIgnore
 	private String password;
 
+	@Getter
+	private MHotel hotel;
+
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserPrincipal(Long id, String firstName, String lastName, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+	public UserPrincipal(Long id, String firstName, String lastName, String username, String email, String password, MHotel hotel,
+						 Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
+		this.hotel = hotel;
 		this.password = password;
 
 		if (authorities == null) {
@@ -47,12 +55,12 @@ public class UserPrincipal implements UserDetails {
 		}
 	}
 
-	public static UserPrincipal create(User user) {
+	public static UserPrincipal create(MUser user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-		return new UserPrincipal(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(),
-				user.getEmail(), user.getPassword(), authorities);
+		return new UserPrincipal(user.getId(), user.getFirstName(), user.getLastName(), user.getUserName(),
+				user.getEmail(), user.getPassword(),user.getHotel(), authorities);
 	}
 
 	public Long getId() {
